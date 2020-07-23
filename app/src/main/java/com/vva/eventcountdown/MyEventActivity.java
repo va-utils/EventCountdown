@@ -42,7 +42,15 @@ public class MyEventActivity extends AppCompatActivity
 
     public void selectFromCalendar(View v)
     {
-        DatePickerDialog dp = new DatePickerDialog(MyEventActivity.this,selectDateLinster, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        DatePickerDialog dp;
+        if(id > 0)
+        {
+            dp = new DatePickerDialog(MyEventActivity.this,selectDateLinster, datePicker.getYear(), datePicker.getMonth(), datePicker.getDayOfMonth());
+        }
+        else
+        {
+            dp = new DatePickerDialog(MyEventActivity.this,selectDateLinster, c.get(Calendar.YEAR), c.get(Calendar.MONTH), c.get(Calendar.DAY_OF_MONTH));
+        }
         dp.getDatePicker().setMinDate(c.getTimeInMillis());
         dp.show();
     }
@@ -86,7 +94,7 @@ public class MyEventActivity extends AppCompatActivity
 
                 if(event.localDate.toEpochDay() < LocalDate.now().toEpochDay()) //архивный
                 {
-                    oldTextView.setText("Это событие уже произошло " + event.getLocalDateTimeString());
+                    oldTextView.setText(getResources().getString(R.string.newevent_text_foroldevents,event.getLocalDateTimeString()));
                     oldTextView.setVisibility(View.VISIBLE);
                 }
             }

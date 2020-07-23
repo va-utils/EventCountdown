@@ -12,13 +12,14 @@
     <string name="newevent_text_selectdate">Выберите дату: </string>
     <string name="newevent_button_delete">Удалить</string>
     <string name="newevent_text_selectfromcal">Выбрать в календаре</string>
+    <string name="newevent_text_foroldevents">Это событие уже произошло %1$s</string>
     <string name="all_button_save">Сохранить</string>
     <string name="all_label_newevent">Новое событие</string>
     <string name="all_label_settings">Настройки</string>
     <string name="all_label_about">О программе</string>
     <string name="all_text_today">Сегодня</string>
 
-    <string name="main_text_welcome">Пока ничего не добавлено...</string>
+    <string name="main_text_welcome">Пока ничего не добавлено&#8230;</string>
 
     <string name="about_text_about">Event Countdown - бесплатное приложение для того, чтобы знать, сколько осталось до важного события.
         Без рекламы и с открытым исходным кодом.
@@ -30,7 +31,7 @@
     <string name="about_version">Версия: %1$s</string>
     <string name="widget_config_welcome">Выберите событие для отображения на виджете: </string>
 
-    <string name="appwidget_error">Загрузка...</string>
+    <string name="appwidget_error">Загрузка&#8230;</string>
     <string name="configure">Какое событие отображать?</string>
     <string name="add_widget">Добавить виджет</string>
 
