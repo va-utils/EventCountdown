@@ -1,0 +1,42 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="com.vva.eventcountdown.MainActivity">
+
+
+    <item
+        android:title="@string/action_sort">
+        <menu>
+            <item
+                android:id="@+id/action_sort_asc"
+                android:orderInCategory="100"
+                android:title="@string/action_sortacs"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/action_sort_desc"
+                android:orderInCategory="100"
+                android:title="@string/action_sortdesc"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/action_sort_nosort"
+                android:orderInCategory="100"
+                android:title="@string/action_sortoff"
+                app:showAsAction="never"/>
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_archive"
+        android:orderInCategory="100"
+        android:title="Архив"
+        app:showAsAction="never"/>
+
+    <item
+        android:id="@+id/action_about"
+        android:orderInCategory="100"
+        android:title="@string/action_about"
+        app:showAsAction="never" />
+
+</menu>
