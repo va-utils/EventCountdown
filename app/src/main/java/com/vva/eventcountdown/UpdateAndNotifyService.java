@@ -68,7 +68,6 @@ public class UpdateAndNotifyService extends Service {
                 notificationManager.createNotificationChannel(channel);
                 notificationManager.notify(NOTIFY_ID, builder.build());
             }
-            Toast.makeText(context,"OK!!!",Toast.LENGTH_LONG).show();
         }
         catch (Exception e)
         {

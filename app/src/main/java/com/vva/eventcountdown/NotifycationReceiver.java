@@ -22,7 +22,6 @@ public class NotifycationReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         if (intent.getAction().equalsIgnoreCase(Intent.ACTION_BOOT_COMPLETED) || intent.getAction().equalsIgnoreCase(Intent.ACTION_DATE_CHANGED)) {
-            Toast.makeText(context, "Запуск Event Countdown...", Toast.LENGTH_LONG).show();
             Intent forServiceIntent = new Intent(context, UpdateAndNotifyService.class);
             context.startService(forServiceIntent);
         }
