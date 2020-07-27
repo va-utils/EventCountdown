@@ -9,8 +9,8 @@ Event Countdown - бесплатное приложение для ОС Android,
 Приложение не собирает никаких данных, все сохраненые даты и события храняться только в Вашем телефоне.
 
 ## Скриншоты
-
-![Event Countdown Screenshot](http://va-soft.eviko.org/wp-content/uploads/2020/07/Screenshot_20200723-194803-576x1024.png "Main Activity")
+<img src="http://va-soft.eviko.org/wp-content/uploads/2020/07/Screenshot_20200723-194803-576x1024.png" width="320" height="569" /> 
+<img src="http://va-soft.eviko.org/wp-content/uploads/2020/07/Screenshot_20200723-194820-576x1024.png" width="320" height="569" />
 
 ## Обратная связь и авторство
 
