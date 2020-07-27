@@ -6,6 +6,7 @@ import java.time.temporal.ChronoUnit;
 import java.util.List;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.content.res.Resources;
 import android.graphics.Color;
 import android.view.LayoutInflater;
@@ -21,10 +22,17 @@ public class EventAdapter extends ArrayAdapter<MyEvent>
     List<MyEvent> events;
     LayoutInflater inflater;
     int layout;
+    SharedPreferences sharedPreferences;
+    int format;
+
+    static final String SETTINGS_FILENAME = "settings";
+    public final String SETTING_FORMAT = "format";
 
     public EventAdapter(Context context, int resource, List<MyEvent> events)
     {
         super(context, resource, events);
+        sharedPreferences = context.getSharedPreferences(SETTINGS_FILENAME, context.MODE_PRIVATE);
+        format = sharedPreferences.getInt(SETTING_FORMAT,0);
         this.events = events;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);
@@ -54,6 +62,8 @@ public class EventAdapter extends ArrayAdapter<MyEvent>
             String sDays = "";
             String sMonths = "";
             String sYears = "";
+            StringBuilder result = new StringBuilder();
+
 
             Period p = event.getPeriod();
             if(p.getDays() != 0)
@@ -64,9 +74,15 @@ public class EventAdapter extends ArrayAdapter<MyEvent>
                 sYears = res.getQuantityString(R.plurals.years, Math.abs(p.getYears()), Math.abs(p.getYears()));
 
             if(totalDays>0)
-                periodTextView.setText(res.getString(R.string.all_remained,sDays,sMonths,sYears));
+                if(format==0)
+                    periodTextView.setText(res.getString(R.string.all_remained,sDays,sMonths,sYears));
+                else
+                    periodTextView.setText(res.getString(R.string.all_remained,sYears,sMonths,sDays));
             else
-                periodTextView.setText(res.getString(R.string.all_passed,sDays,sMonths,sYears));
+                if(format==1)
+                    periodTextView.setText(res.getString(R.string.all_passed,sDays,sMonths,sYears));
+                else
+                    periodTextView.setText(res.getString(R.string.all_passed,sYears,sMonths,sDays));
         }
         else
         {

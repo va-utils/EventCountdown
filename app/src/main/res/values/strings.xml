@@ -5,7 +5,15 @@
     <string name="action_sortacs">Сперва ближайшие</string>
     <string name="action_sortdesc">Сперва более поздние</string>
     <string name="action_sortoff">Не сортировать</string>
+    <string name="action_archieve">Архив</string>
+    <string name="action_format">Формат вывода</string>
+    <string name="action_format_dmy">Дни, месяцы, годы</string>
+    <string name="action_format_ymd">Годы, месяцы, дни</string>
+
     <string name="action_about">О программе</string>
+
+
+
     <string name="newevent_text_label">Редактирование</string>
     <string name="newevent_text_title">Заголовок:</string>
     <string name="newevent_text_description">Описание:</string>
@@ -37,6 +45,6 @@
 
     <string name="arc_text_welcome">Здесь будут отображаться прошедшие события</string>
 
-    <string name="all_remained">Осталось %1$s %2$s %3$s</string>
-    <string name="all_passed">Прошло %1$s %2$s %3$s</string>
+    <string name="all_remained">Осталось %1$s%2$s%3$s</string>
+    <string name="all_passed">Прошло %1$s%2$s%3$s</string>
 </resources>

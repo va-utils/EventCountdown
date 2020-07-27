@@ -28,6 +28,25 @@
     </item>
 
     <item
+        android:title="@string/action_format">
+        <menu>
+
+            <item
+                android:id="@+id/action_format_dmy"
+                android:orderInCategory="100"
+                android:title="@string/action_format_dmy"
+                app:showAsAction="never"/>
+
+            <item
+                android:id="@+id/action_format_ymd"
+                android:orderInCategory="100"
+                android:title="@string/action_format_ymd"
+                app:showAsAction="never"/>
+
+        </menu>
+    </item>
+
+    <item
         android:id="@+id/action_archive"
         android:orderInCategory="100"
         android:title="Архив"

@@ -13,7 +13,6 @@ import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,8 +23,10 @@ public class MainActivity extends AppCompatActivity {
 
     static final String SETTINGS_FILENAME = "settings";
     public final String SETTING_ORDER = "ordering";
+    public final String SETTING_FORMAT = "format";
     private SharedPreferences sharedPreferences;
 
+    Menu menu;
     TextView welcomeTextView;
     List<MyEvent> events = new ArrayList<MyEvent>();
     ListView listView;
@@ -62,8 +63,64 @@ public class MainActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
+        this.menu = menu;
         getMenuInflater().inflate(R.menu.menu_main, menu);
+        hideSortMenuItem();
+        hideFormatMenuItem();
         return true;
+    }
+
+    public void hideSortMenuItem()
+    {
+
+        int orderBy = sharedPreferences.getInt(SETTING_ORDER,0);
+        switch(orderBy)
+        {
+            case DateBaseHelper.ORDER_ASC:
+            {
+                menu.findItem(R.id.action_sort_asc).setEnabled(false);
+                menu.findItem(R.id.action_sort_desc).setEnabled(true);
+                menu.findItem(R.id.action_sort_nosort).setEnabled(true);
+                break;
+            }
+            case DateBaseHelper.ORDER_DESC:
+            {
+                menu.findItem(R.id.action_sort_asc).setEnabled(true);
+                menu.findItem(R.id.action_sort_desc).setEnabled(false);
+                menu.findItem(R.id.action_sort_nosort).setEnabled(true);
+                break;
+            }
+            case DateBaseHelper.ORDER_NONE:
+            {
+                menu.findItem(R.id.action_sort_asc).setEnabled(true);
+                menu.findItem(R.id.action_sort_desc).setEnabled(true);
+                menu.findItem(R.id.action_sort_nosort).setEnabled(false);
+                break;
+            }
+        }
+        //---------------------
+    }
+
+    public void hideFormatMenuItem()
+    {
+
+        int format = sharedPreferences.getInt(SETTING_FORMAT,0);
+        switch(format)
+        {
+            case 0:
+            {
+                menu.findItem(R.id.action_format_dmy).setEnabled(false);
+                menu.findItem(R.id.action_format_ymd).setEnabled(true);
+                break;
+            }
+            case 1:
+            {
+                menu.findItem(R.id.action_format_dmy).setEnabled(true);
+                menu.findItem(R.id.action_format_ymd).setEnabled(false);
+                break;
+            }
+        }
+        //---------------------
     }
 
     public void showEvents()
@@ -91,6 +148,7 @@ public class MainActivity extends AppCompatActivity {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
+
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
@@ -105,6 +163,8 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(SETTING_ORDER,DateBaseHelper.ORDER_ASC);
             editor.apply();
+            item.setEnabled(false);
+            hideSortMenuItem();
             showEvents();
         }
 
@@ -113,6 +173,7 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(SETTING_ORDER,DateBaseHelper.ORDER_DESC);
             editor.apply();
+            hideSortMenuItem();
             showEvents();
         }
 
@@ -121,6 +182,25 @@ public class MainActivity extends AppCompatActivity {
             SharedPreferences.Editor editor = sharedPreferences.edit();
             editor.putInt(SETTING_ORDER,DateBaseHelper.ORDER_NONE);
             editor.apply();
+            hideSortMenuItem();
+            showEvents();
+        }
+
+        if(id == R.id.action_format_dmy)
+        {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(SETTING_FORMAT,0);
+            editor.apply();
+            hideFormatMenuItem();
+            showEvents();
+        }
+
+        if(id == R.id.action_format_ymd)
+        {
+            SharedPreferences.Editor editor = sharedPreferences.edit();
+            editor.putInt(SETTING_FORMAT,1);
+            editor.apply();
+            hideFormatMenuItem();
             showEvents();
         }
 
