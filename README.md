@@ -10,8 +10,12 @@ Event Countdown - бесплатное приложение для ОС Android,
 
 ## Скриншоты
 
+![Event Countdown Screenshot](http://va-soft.eviko.org/wp-content/uploads/2020/07/Screenshot_20200723-194803-576x1024.png "Main Activity")
+![Event Countdown Screenshot](http://va-soft.eviko.org/wp-content/uploads/2020/07/Screenshot_20200723-194820-576x1024.png "Event Activity")
+
 ## Обратная связь и авторство
 
 Оставляйте свои сообщения об ошибках в Issues или присылайте на почту viktor70@protonmail.com
 
-Виктор Вяличкин,2020.
+2020, Виктор Вяличкин
+Иконка и графика: Матвеева Галина, Терехова Виктория
