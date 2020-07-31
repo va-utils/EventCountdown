@@ -38,7 +38,10 @@
 
     <string name="about_version">Версия: %1$s</string>
     <string name="widget_config_welcome">Выберите событие для отображения на виджете: </string>
-
+    <string name="widget_config_text_opacity">Непрозрачность</string>
+    <string name="widget_config_text_textsize">Размер надписей</string>
+    <string name="widget_config_text_preview">Текст виджета</string>
+    <string name="widget_config_button_selectcolor">Выбрать цвет</string>
     <string name="appwidget_error">Загрузка&#8230;</string>
     <string name="configure">Какое событие отображать?</string>
     <string name="add_widget">Добавить виджет</string>
@@ -47,4 +50,6 @@
 
     <string name="all_remained">Осталось %1$s%2$s%3$s</string>
     <string name="all_passed">Прошло %1$s%2$s%3$s</string>
+
+
 </resources>

@@ -5,41 +5,70 @@ import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.SeekBar;
+import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import java.util.ArrayList;
+import androidx.appcompat.app.AppCompatActivity;
+
+import com.jaredrummler.android.colorpicker.ColorPickerDialog;
+import com.jaredrummler.android.colorpicker.ColorPickerDialogListener;
+import com.jaredrummler.android.colorpicker.ColorShape;
+
 import java.util.List;
 
 /**
  * The configuration screen for the {@link CountDownAppWidget CountDownAppWidget} AppWidget.
  */
-public class CountDownAppWidgetConfigureActivity extends Activity {
+public class CountDownAppWidgetConfigureActivity extends AppCompatActivity implements  ColorPickerDialogListener{
+
+
 
     static final String SETTINGS_FILENAME = "settings";
     private static final String PREF_PREFIX_KEY = "widget_";
+    private static final String PREF_PREFIX_KEY_OP = "widget_op_";
+    private static final String PREF_PREFIX_KEY_FS = "widget_fs_";
+    private static final String PREF_PREFIX_KEY_FC = "widget_fc_";
+
+    public static final int BLACK = 0;
+    public static final int WHITE = 1;
+    public static final int YELLOW = 2;
+    public static final int BLUE = 3;
+
     public final String SETTING_ORDER = "ordering";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     ListView listView;
     EventAdapter eventAdapter;
     TextView selectedTextView;
     Button addButton;
+    SeekBar opSeekBar;
+    SeekBar fsSeekBar;
+   // Spinner colorSpinner;
+    Button selectColorButton;
+    TextView selectColorTextView;
+    int color = Color.DKGRAY;
+
     long selectedId;
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = CountDownAppWidgetConfigureActivity.this;
 
+
+
             // When the button is clicked, store the string locally
             //String widgetText = mAppWidgetText.getText().toString();
-            saveId(context,mAppWidgetId,selectedId);
-
+            saveId(context,mAppWidgetId,selectedId,opSeekBar.getProgress(),fsSeekBar.getProgress(),color);
+          //  Toast.makeText(context,String.valueOf(fsSeekBar.getProgress()),Toast.LENGTH_LONG).show();
+           // addButton.setTextSiz
             // It is the responsibility of the configuration activity to update the app widget
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             CountDownAppWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
@@ -57,10 +86,13 @@ public class CountDownAppWidgetConfigureActivity extends Activity {
     }
 
     // Write the prefix to the SharedPreferences object for this widget
-    static void saveId(Context context, int appWidgetId, long value) {
+    static void saveId(Context context, int appWidgetId, long value, int opacity, int fs, int color) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(SETTINGS_FILENAME, 0).edit();
        // prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
         prefs.putLong(PREF_PREFIX_KEY + appWidgetId,value);
+        prefs.putInt(PREF_PREFIX_KEY_OP + appWidgetId, opacity);
+        prefs.putInt(PREF_PREFIX_KEY_FS + appWidgetId, fs);
+        prefs.putInt(PREF_PREFIX_KEY_FC + appWidgetId, color);
         prefs.apply();
     }
 
@@ -72,9 +104,39 @@ public class CountDownAppWidgetConfigureActivity extends Activity {
         return titleId;
     }
 
+    static int loadColor(Context context, int appWidgetId)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(SETTINGS_FILENAME,0);
+        return prefs.getInt(PREF_PREFIX_KEY_FC+appWidgetId,0);
+    }
+
+    static float loadOpacity(Context context, long appWidgetId)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(SETTINGS_FILENAME, 0);
+        int opacity = prefs.getInt(PREF_PREFIX_KEY_OP+appWidgetId,90);
+        return (float)opacity/100;
+    }
+
+    static float loadFontSize(Context context, long appWidgetId)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(SETTINGS_FILENAME, 0);
+        int fontSize = prefs.getInt(PREF_PREFIX_KEY_FS+appWidgetId,12);
+        return (float)fontSize;
+    }
+
+    static int loadFormat(Context context)
+    {
+        SharedPreferences prefs = context.getSharedPreferences(SETTINGS_FILENAME,0);
+        int format = prefs.getInt("format",0);
+        return format;
+    }
+
     static void deleteId(Context context, long appWidgetId) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(SETTINGS_FILENAME, 0).edit();
         prefs.remove(PREF_PREFIX_KEY + appWidgetId);
+        prefs.remove(PREF_PREFIX_KEY_OP + appWidgetId);
+        prefs.remove(PREF_PREFIX_KEY_FS + appWidgetId);
+        prefs.remove(PREF_PREFIX_KEY_FC + appWidgetId);
         prefs.apply();
     }
 
@@ -87,12 +149,20 @@ public class CountDownAppWidgetConfigureActivity extends Activity {
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.count_down_app_widget_configure);
-        //mAppWidgetText = (EditText) findViewById(R.id.appwidget_text);
         listView = findViewById(R.id.listView);
         selectedTextView = findViewById(R.id.selectedTextView);
         addButton = findViewById(R.id.addButton);
         addButton.setEnabled(false);
         addButton.setOnClickListener(mOnClickListener);
+        opSeekBar = findViewById(R.id.opSeekBar);
+        fsSeekBar = findViewById(R.id.fontSeekBar);
+        fsSeekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        selectColorButton = findViewById(R.id.selectColorButton);
+        selectColorButton.setOnClickListener(sel);
+        selectColorTextView = findViewById(R.id.selectColorTextView);
+        selectColorTextView.setTextColor(color);
+        selectColorTextView.setTextSize(12.0F);
+
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -108,6 +178,7 @@ public class CountDownAppWidgetConfigureActivity extends Activity {
                 }
             }
         });
+
 
 
         //---выведем список событий
@@ -136,6 +207,68 @@ public class CountDownAppWidgetConfigureActivity extends Activity {
         }
 
         //mAppWidgetText.setText(loadTitlePref(CountDownAppWidgetConfigureActivity.this, mAppWidgetId));
+    }
+
+    public void createColorPickerDialog()
+    {
+        ColorPickerDialog.Builder builder = ColorPickerDialog.newBuilder();
+        builder.setColor(Color.DKGRAY);
+        builder.setDialogType(ColorPickerDialog.TYPE_PRESETS);
+        builder.setAllowCustom(true);
+        builder.setAllowPresets(true);
+        builder.setColorShape(ColorShape.SQUARE);
+        builder.show(this);
+    }
+
+    View.OnClickListener sel = new View.OnClickListener() {
+        @Override
+        public void onClick(View v) {
+            createColorPickerDialog();
+        }
+    };
+
+    @Override
+    public void onColorSelected(int dialogId, int color) {
+        this.color = color;
+        selectColorTextView.setTextColor(color);
+    }
+
+    @Override
+    public void onDialogDismissed(int dialogId) {
+        selectColorTextView.setTextColor(color);
+    }
+
+    SeekBar.OnSeekBarChangeListener onSeekBarChangeListener = new SeekBar.OnSeekBarChangeListener() {
+        @Override
+        public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+            selectColorTextView.setTextSize((float)(seekBar.getProgress()));
+        }
+
+        @Override
+        public void onStartTrackingTouch(SeekBar seekBar) {
+
+        }
+
+        @Override
+        public void onStopTrackingTouch(SeekBar seekBar) {
+
+        }
+    };
+
+    @Override
+    protected void onRestoreInstanceState(Bundle bundle)
+    {
+        super.onRestoreInstanceState(bundle);
+        color = bundle.getInt("FONT_COLOR");
+        selectColorTextView.setTextColor(color);
+    }
+
+    @Override
+    protected void onSaveInstanceState(Bundle bundle)
+    {
+        //TODO: сделать сохранение выбранного события
+        bundle.putInt("FONT_COLOR",color);
+        super.onSaveInstanceState(bundle);
     }
 }
 

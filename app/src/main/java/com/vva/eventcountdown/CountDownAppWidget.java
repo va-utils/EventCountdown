@@ -28,6 +28,22 @@ public class CountDownAppWidget extends AppWidgetProvider {
         adapter.close();
 
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.count_down_app_widget);
+        //основные характеристики виджета
+        int format = CountDownAppWidgetConfigureActivity.loadFormat(context);
+        int backgroundColor = 0x00f0f0f0; //цвет фона
+        int titleColor = 0x00fe943c; //цвет заголовка
+        float op = CountDownAppWidgetConfigureActivity.loadOpacity(context,appWidgetId); //непрозрачность
+        float baseFontSize = CountDownAppWidgetConfigureActivity.loadFontSize(context,appWidgetId); //размер шрифта
+        int color = CountDownAppWidgetConfigureActivity.loadColor(context,appWidgetId);
+        //-----
+
+        views.setFloat(R.id.titleTextView,"setTextSize",baseFontSize+2);
+        views.setFloat(R.id.countDownTextView,"setTextSize",baseFontSize);
+        views.setFloat(R.id.fullCountDownTextView,"setTextSize",baseFontSize);
+        views.setInt(R.id.countDownTextView,"setTextColor",color);
+        views.setInt(R.id.fullCountDownTextView,"setTextColor",color);
+        views.setInt( R.id.linearLayout, "setBackgroundColor", (int)(op * 0xFF) << 24 | backgroundColor);
+        views.setInt( R.id.titleTextView, "setBackgroundColor", (int)(op * 0xFF) << 24 | titleColor);
 
         if(event!=null)
         {
@@ -49,14 +65,21 @@ public class CountDownAppWidget extends AppWidgetProvider {
                     sYears = res.getQuantityString(R.plurals.years, Math.abs(p.getYears()), Math.abs(p.getYears()));
 
                 if(totalDays>0)
-                    result = res.getString(R.string.all_remained,sDays,sMonths,sYears);
+                    if(format==0)
+                        result = res.getString(R.string.all_remained,sDays,sMonths,sYears);
+                    else
+                        result = res.getString(R.string.all_remained,sYears,sMonths,sDays);
                 else
-                    result = res.getString(R.string.all_passed,sDays,sMonths,sYears);
+                    if(format==1)
+                        result = res.getString(R.string.all_passed,sDays,sMonths,sYears);
+                    else
+                        result = res.getString(R.string.all_passed,sYears,sMonths,sDays);
             }
             else
             {
                 result = context.getString(R.string.all_text_today);
             }
+
 
             views.setTextViewText(R.id.titleTextView, event.getTitle());
             views.setTextViewText(R.id.countDownTextView, res.getQuantityString(R.plurals.days, Math.abs(totalDays), Math.abs(totalDays)));
