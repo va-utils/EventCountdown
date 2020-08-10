@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    tools:context=".CountDownAppWidgetConfigureActivity">
+
+    <item
+        android:id="@+id/widget_config_action_defaults"
+        android:title="@string/widget_config_menu_default"
+        android:orderInCategory="100"
+        app:showAsAction="never"/>
+</menu>

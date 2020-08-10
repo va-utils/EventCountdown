@@ -6,6 +6,8 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -286,6 +288,32 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
         //TODO: сделать сохранение выбранного события
         bundle.putInt("FONT_COLOR",color);
         super.onSaveInstanceState(bundle);
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_count_down_app_widget_configure,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.widget_config_action_defaults)
+        {
+            setDefaults();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
+    }
+
+    private void setDefaults()
+    {
+        opSeekBar.setProgress(90);
+        fsSeekBar.setProgress(12);
+        color=Color.DKGRAY;
+        selectColorTextView.setTextColor(color);
     }
 }
 
