@@ -1,6 +1,5 @@
 package com.vva.eventcountdown;
 
-import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.Service;
@@ -14,10 +13,8 @@ import android.os.IBinder;
 import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 
 import java.time.LocalDate;
-import java.time.Period;
 import java.util.List;
 
 public class UpdateAndNotifyService extends Service {

@@ -1,11 +1,10 @@
 <resources>
     <string name="app_name">Event Countdown</string>
-    <string name="action_settings">Настройки</string>
     <string name="action_sort">Сортировка</string>
     <string name="action_sortacs">Сперва ближайшие</string>
     <string name="action_sortdesc">Сперва более поздние</string>
     <string name="action_sortoff">Не сортировать</string>
-    <string name="action_archieve">Архив</string>
+    <string name="action_arc">Архив</string>
     <string name="action_format">Формат вывода</string>
     <string name="action_format_dmy">Дни, месяцы, годы</string>
     <string name="action_format_ymd">Годы, месяцы, дни</string>
@@ -17,13 +16,11 @@
     <string name="newevent_text_label">Редактирование</string>
     <string name="newevent_text_title">Заголовок:</string>
     <string name="newevent_text_description">Описание:</string>
-    <string name="newevent_text_selectdate">Выберите дату: </string>
     <string name="newevent_button_delete">Удалить</string>
     <string name="newevent_text_selectfromcal">Выбрать в календаре</string>
     <string name="newevent_text_foroldevents">Это событие уже произошло %1$s</string>
     <string name="all_button_save">Сохранить</string>
     <string name="all_label_newevent">Новое событие</string>
-    <string name="all_label_settings">Настройки</string>
     <string name="all_label_about">О программе</string>
     <string name="all_text_today">Сегодня</string>
 
@@ -37,11 +34,11 @@
     </string>
 
     <string name="about_version">Версия: %1$s</string>
-    <string name="widget_config_welcome">Выберите событие для отображения на виджете: </string>
     <string name="widget_config_text_opacity">Непрозрачность</string>
     <string name="widget_config_text_textsize">Размер надписей</string>
     <string name="widget_config_text_preview">Текст виджета</string>
     <string name="widget_config_button_selectcolor">Выбрать цвет</string>
+    <string name="widget_config_text_selectedevent">Выбрано событие: %1$s</string>
     <string name="appwidget_error">Загрузка&#8230;</string>
     <string name="configure">Какое событие отображать?</string>
     <string name="add_widget">Добавить виджет</string>

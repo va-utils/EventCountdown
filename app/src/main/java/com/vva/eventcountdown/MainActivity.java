@@ -14,7 +14,6 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import java.util.ArrayList;
 import java.util.List;
 
 
@@ -28,7 +27,7 @@ public class MainActivity extends AppCompatActivity {
 
     Menu menu;
     TextView welcomeTextView;
-    List<MyEvent> events = new ArrayList<MyEvent>();
+    //List<MyEvent> events = new ArrayList<MyEvent>();
     ListView listView;
     EventAdapter eventAdapter;
 

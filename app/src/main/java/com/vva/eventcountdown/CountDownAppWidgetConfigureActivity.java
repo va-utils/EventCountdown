@@ -1,6 +1,5 @@
 package com.vva.eventcountdown;
 
-import android.app.Activity;
 import android.appwidget.AppWidgetManager;
 import android.content.Context;
 import android.content.Intent;
@@ -9,13 +8,10 @@ import android.graphics.Color;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
-import android.widget.Spinner;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -38,12 +34,10 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
     private static final String PREF_PREFIX_KEY_FS = "widget_fs_";
     private static final String PREF_PREFIX_KEY_FC = "widget_fc_";
 
-    public static final int BLACK = 0;
-    public static final int WHITE = 1;
-    public static final int YELLOW = 2;
-    public static final int BLUE = 3;
-
     public final String SETTING_ORDER = "ordering";
+    public static final String SETTING_DEF_COLOR = "default_color";
+    public static final String SETTING_DEF_TEXTSIZE = "default_textsize";
+    public static final String SETTING_DEF_OPACITY = "default_opacity";
     int mAppWidgetId = AppWidgetManager.INVALID_APPWIDGET_ID;
     ListView listView;
     EventAdapter eventAdapter;
@@ -51,11 +45,9 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
     Button addButton;
     SeekBar opSeekBar;
     SeekBar fsSeekBar;
-   // Spinner colorSpinner;
     Button selectColorButton;
     TextView selectColorTextView;
-    int color = Color.DKGRAY;
-
+    int color = 0;
     long selectedId;
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
@@ -93,6 +85,11 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
         prefs.putInt(PREF_PREFIX_KEY_OP + appWidgetId, opacity);
         prefs.putInt(PREF_PREFIX_KEY_FS + appWidgetId, fs);
         prefs.putInt(PREF_PREFIX_KEY_FC + appWidgetId, color);
+        //---сохраним последние пользовательские настройки
+        prefs.putInt(SETTING_DEF_COLOR,color);
+        prefs.putFloat(SETTING_DEF_TEXTSIZE,fs);
+        prefs.putInt(SETTING_DEF_OPACITY, opacity);
+        //---
         prefs.apply();
     }
 
@@ -100,8 +97,7 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
     // If there is no preference saved, get the default from a resource
     static long loadId(Context context, int appWidgetId) {
         SharedPreferences prefs = context.getSharedPreferences(SETTINGS_FILENAME, 0);
-        long titleId = prefs.getLong(PREF_PREFIX_KEY + appWidgetId, -1);
-        return titleId;
+        return prefs.getLong(PREF_PREFIX_KEY + appWidgetId, -1);
     }
 
     static int loadColor(Context context, int appWidgetId)
@@ -127,8 +123,7 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
     static int loadFormat(Context context)
     {
         SharedPreferences prefs = context.getSharedPreferences(SETTINGS_FILENAME,0);
-        int format = prefs.getInt("format",0);
-        return format;
+        return prefs.getInt("format",0);
     }
 
     static void deleteId(Context context, long appWidgetId) {
@@ -149,30 +144,53 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
         setResult(RESULT_CANCELED);
 
         setContentView(R.layout.count_down_app_widget_configure);
-        listView = findViewById(R.id.listView);
+
+        SharedPreferences sharedPreferences = getSharedPreferences(SETTINGS_FILENAME, 0);
+
+
+
+        color = sharedPreferences.getInt(SETTING_DEF_COLOR,Color.DKGRAY);
+        float fontsize = sharedPreferences.getFloat(SETTING_DEF_TEXTSIZE,12.0F);
+
+        //---текст с выбранным событием
         selectedTextView = findViewById(R.id.selectedTextView);
+
+        //---ползунок прозрачности
+        opSeekBar = findViewById(R.id.opSeekBar);
+        int opacity = sharedPreferences.getInt(SETTING_DEF_OPACITY,90);
+        opSeekBar.setProgress(opacity);
+
+        //---метка примера текста
+        selectColorTextView = findViewById(R.id.selectColorTextView);
+        selectColorTextView.setTextColor(color);
+        //selectColorTextView.setTextSize(fontsize);
+
+        //---ползунок размера текста
+        fsSeekBar = findViewById(R.id.fontSeekBar);
+        fsSeekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);
+        fsSeekBar.setProgress((int)fontsize);
+
+        //---кнопка выбора текста
+        selectColorButton = findViewById(R.id.selectColorButton);
+        selectColorButton.setOnClickListener(sel);
+
+        //---кнопка добавления виджета
         addButton = findViewById(R.id.addButton);
         addButton.setEnabled(false);
         addButton.setOnClickListener(mOnClickListener);
-        opSeekBar = findViewById(R.id.opSeekBar);
-        fsSeekBar = findViewById(R.id.fontSeekBar);
-        fsSeekBar.setOnSeekBarChangeListener(onSeekBarChangeListener);
-        selectColorButton = findViewById(R.id.selectColorButton);
-        selectColorButton.setOnClickListener(sel);
-        selectColorTextView = findViewById(R.id.selectColorTextView);
-        selectColorTextView.setTextColor(color);
-        selectColorTextView.setTextSize(12.0F);
 
+        //---список с событиями
+        listView = findViewById(R.id.listView);
         listView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                DateBaseAdapter adapter = new DateBaseAdapter(CountDownAppWidgetConfigureActivity.this);
+              //DateBaseAdapter adapter = new DateBaseAdapter(CountDownAppWidgetConfigureActivity.this);
                 MyEvent event = eventAdapter.getItem(position);
 
                 if(event!=null)
                 {
                     long EventId = event.getId();
-                    selectedTextView.setText("Выбрано событие: " + event.getTitle());
+                    selectedTextView.setText(getString(R.string.widget_config_text_selectedevent,event.getTitle()));
                     selectedId = EventId;
                     addButton.setEnabled(true);
                 }
@@ -182,7 +200,7 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
 
 
         //---выведем список событий
-        SharedPreferences sharedPreferences = getSharedPreferences(SETTINGS_FILENAME, 0);
+
         int orderBy = sharedPreferences.getInt(SETTING_ORDER,0);
         DateBaseAdapter adapter = new DateBaseAdapter(this);
         adapter.open();
@@ -203,7 +221,6 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
         // If this activity was started with an intent without an app widget ID, finish with an error.
         if (mAppWidgetId == AppWidgetManager.INVALID_APPWIDGET_ID) {
             finish();
-            return;
         }
 
         //mAppWidgetText.setText(loadTitlePref(CountDownAppWidgetConfigureActivity.this, mAppWidgetId));
@@ -212,7 +229,7 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
     public void createColorPickerDialog()
     {
         ColorPickerDialog.Builder builder = ColorPickerDialog.newBuilder();
-        builder.setColor(Color.DKGRAY);
+        builder.setColor(color);
         builder.setDialogType(ColorPickerDialog.TYPE_PRESETS);
         builder.setAllowCustom(true);
         builder.setAllowPresets(true);

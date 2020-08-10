@@ -49,7 +49,7 @@
     <item
         android:id="@+id/action_archive"
         android:orderInCategory="100"
-        android:title="Архив"
+        android:title="@string/action_arc"
         app:showAsAction="never"/>
 
     <item

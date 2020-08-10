@@ -20,10 +20,10 @@ public class DateBaseAdapter
         dbHelper = new DateBaseHelper(context.getApplicationContext());
     }
 
-    public DateBaseAdapter open()
+    public void open()
     {
         db = dbHelper.getWritableDatabase();
-        return this;
+        //return this;
     }
 
     public void close()
@@ -44,7 +44,7 @@ public class DateBaseAdapter
         else
             orderClause = null;
 
-        if(showOld == true)
+        if(showOld)
             whereClause = DateBaseHelper.COLUMN_EPOCHDAYS + " < " + ed; //номер дня события меньше сегодняшнего
         else
             whereClause = DateBaseHelper.COLUMN_EPOCHDAYS + " >= " + ed;
@@ -125,7 +125,7 @@ public class DateBaseAdapter
 
     public long update(MyEvent event)
     {
-        String whereClause = DateBaseHelper.COLUMN_ID+"="+String.valueOf(event.getId());
+        String whereClause = DateBaseHelper.COLUMN_ID+"="+event.getId();
         ContentValues contentValues = new ContentValues();
         contentValues.put(DateBaseHelper.COLUMN_TITLE,event.getTitle());
         contentValues.put(DateBaseHelper.COLUMN_DESCR,event.getDescription());

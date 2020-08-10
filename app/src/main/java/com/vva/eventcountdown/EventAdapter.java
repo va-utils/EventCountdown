@@ -8,25 +8,22 @@ import java.util.List;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.content.res.Resources;
-import android.graphics.Color;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
-import android.widget.Toast;
-
 
 public class EventAdapter extends ArrayAdapter<MyEvent>
 {
-    List<MyEvent> events;
-    LayoutInflater inflater;
-    int layout;
-    SharedPreferences sharedPreferences;
-    int format;
+    private List<MyEvent> events;
+    private LayoutInflater inflater;
+    private int layout;
+    private SharedPreferences sharedPreferences;
+    private int format;
 
-    static final String SETTINGS_FILENAME = "settings";
-    public final String SETTING_FORMAT = "format";
+    private static final String SETTINGS_FILENAME = "settings";
+    private final String SETTING_FORMAT = "format";
 
     public EventAdapter(Context context, int resource, List<MyEvent> events)
     {
@@ -62,8 +59,6 @@ public class EventAdapter extends ArrayAdapter<MyEvent>
             String sDays = "";
             String sMonths = "";
             String sYears = "";
-            StringBuilder result = new StringBuilder();
-
 
             Period p = event.getPeriod();
             if(p.getDays() != 0)

@@ -1,11 +1,9 @@
 package com.vva.eventcountdown;
 
 import java.io.Serializable;
-import java.text.DateFormat;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.format.DateTimeFormatter;
-import java.util.Date;
 
 public class MyEvent implements Serializable
 {
@@ -16,12 +14,6 @@ public class MyEvent implements Serializable
 
     long getId() { return id;}
     void setId(long id) { this.id = id;}
-
-    long getEpochMillis()
-    {
-        localDate.toEpochDay();
-        return 0;
-    }
 
     String getTitle() {return title;}
     String getDescription() {return description;}
