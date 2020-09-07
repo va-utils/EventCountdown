@@ -7,14 +7,12 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
-import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import java.util.List;
 
@@ -32,7 +30,7 @@ public class MainActivity extends AppCompatActivity {
     //List<MyEvent> events = new ArrayList<MyEvent>();
     ListView listView;
     EventAdapter eventAdapter;
-    boolean event_enter_flag = false;
+    boolean activity_flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -53,7 +51,7 @@ public class MainActivity extends AppCompatActivity {
             MyEvent event = eventAdapter.getItem(position);
             if(event!=null)
             {
-                event_enter_flag = true;
+                activity_flag = true;
                 Intent intent = new Intent(getApplicationContext(),MyEventActivity.class);
                 intent.putExtra("ID",event.getId());
                 startActivity(intent);
@@ -156,6 +154,7 @@ public class MainActivity extends AppCompatActivity {
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_about) {
+            activity_flag = true;
             Intent intent = new Intent(MainActivity.this, AboutActivity.class);
             startActivity(intent);
             return true;
@@ -209,6 +208,7 @@ public class MainActivity extends AppCompatActivity {
 
         if(id == R.id.action_archive)
         {
+            activity_flag = true;
             Intent intent = new Intent(MainActivity.this,ArcActivity.class);
             startActivity(intent);
         }
@@ -218,7 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addNewEvent(View v)
     {
-        event_enter_flag = true;
+        activity_flag = true;
         Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
         startActivity(intent);
     }
@@ -233,9 +233,9 @@ public class MainActivity extends AppCompatActivity {
     @Override
     protected void onUserLeaveHint()
     {
-        if(event_enter_flag)
+        if(activity_flag)
         {
-            event_enter_flag = false;
+            activity_flag = false;
         }
         else
         {
