@@ -14,6 +14,7 @@ import android.widget.Button;
 import android.widget.ListView;
 import android.widget.SeekBar;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -51,23 +52,18 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
     TextView selectColorTextView;
     int color = 0;
     long selectedId;
+    boolean update_flag;
 
     View.OnClickListener mOnClickListener = new View.OnClickListener() {
         public void onClick(View v) {
             final Context context = CountDownAppWidgetConfigureActivity.this;
 
 
-
-            // When the button is clicked, store the string locally
-            //String widgetText = mAppWidgetText.getText().toString();
             saveId(context,mAppWidgetId,selectedId,opSeekBar.getProgress(),fsSeekBar.getProgress(),color);
-          //  Toast.makeText(context,String.valueOf(fsSeekBar.getProgress()),Toast.LENGTH_LONG).show();
-           // addButton.setTextSiz
-            // It is the responsibility of the configuration activity to update the app widget
+
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             CountDownAppWidget.updateAppWidget(context, appWidgetManager, mAppWidgetId);
 
-            // Make sure we pass back the original appWidgetId
             Intent resultValue = new Intent();
             resultValue.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID, mAppWidgetId);
             setResult(RESULT_OK, resultValue);
@@ -82,7 +78,7 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
     // Write the prefix to the SharedPreferences object for this widget
     static void saveId(Context context, int appWidgetId, long value, int opacity, int fs, int color) {
         SharedPreferences.Editor prefs = context.getSharedPreferences(SETTINGS_FILENAME, 0).edit();
-       // prefs.putString(PREF_PREFIX_KEY + appWidgetId, text);
+
         prefs.putLong(PREF_PREFIX_KEY + appWidgetId,value);
         prefs.putInt(PREF_PREFIX_KEY_OP + appWidgetId, opacity);
         prefs.putInt(PREF_PREFIX_KEY_FS + appWidgetId, fs);
@@ -218,6 +214,23 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
         if (extras != null) {
             mAppWidgetId = extras.getInt(
                     AppWidgetManager.EXTRA_APPWIDGET_ID, AppWidgetManager.INVALID_APPWIDGET_ID);
+            update_flag = extras.getBoolean("UPDATE_FLAG",false);
+            if(update_flag)
+            {
+                adapter.open();
+                addButton.setText(getString(R.string.widget_config_update)); //TODO: в ресурсы
+                MyEvent myEvent = adapter.getEvent(loadId(getApplicationContext(),mAppWidgetId));
+                adapter.close();
+
+                selectedId = myEvent.getId();
+                selectedTextView.setText(getString(R.string.widget_config_text_selectedevent,myEvent.getTitle()));
+                opSeekBar.setProgress((int)(loadOpacity(getApplicationContext(),mAppWidgetId)*100));
+                fsSeekBar.setProgress((int)loadFontSize(getApplicationContext(),mAppWidgetId));
+                selectColorTextView.setTextSize(loadFontSize(getApplicationContext(),mAppWidgetId));
+                color = loadColor(getApplicationContext(),mAppWidgetId);
+                selectColorTextView.setTextColor(color);
+                addButton.setEnabled(true);
+            }
         }
 
         // If this activity was started with an intent without an app widget ID, finish with an error.
@@ -225,6 +238,7 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
             finish();
         }
 
+    //    adapter.close(); //05092020
         //mAppWidgetText.setText(loadTitlePref(CountDownAppWidgetConfigureActivity.this, mAppWidgetId));
     }
 
@@ -251,6 +265,13 @@ public class CountDownAppWidgetConfigureActivity extends AppCompatActivity imple
         this.color = color;
         selectColorTextView.setTextColor(color);
     }
+
+//    @Override
+//    public void onBackPressed()
+//    {
+//        super.onBackPressed();
+//        finish();
+//    }
 
     @Override
     public void onDialogDismissed(int dialogId) {

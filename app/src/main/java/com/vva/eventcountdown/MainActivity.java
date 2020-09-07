@@ -7,12 +7,14 @@ import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -30,6 +32,7 @@ public class MainActivity extends AppCompatActivity {
     //List<MyEvent> events = new ArrayList<MyEvent>();
     ListView listView;
     EventAdapter eventAdapter;
+    boolean event_enter_flag = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
             MyEvent event = eventAdapter.getItem(position);
             if(event!=null)
             {
+                event_enter_flag = true;
                 Intent intent = new Intent(getApplicationContext(),MyEventActivity.class);
                 intent.putExtra("ID",event.getId());
                 startActivity(intent);
@@ -214,6 +218,7 @@ public class MainActivity extends AppCompatActivity {
 
     public void addNewEvent(View v)
     {
+        event_enter_flag = true;
         Intent intent = new Intent(MainActivity.this, MyEventActivity.class);
         startActivity(intent);
     }
@@ -223,5 +228,26 @@ public class MainActivity extends AppCompatActivity {
     {
         super.onResume();
         showEvents();
+    }
+
+    @Override
+    protected void onUserLeaveHint()
+    {
+        if(event_enter_flag)
+        {
+            event_enter_flag = false;
+        }
+        else
+        {
+            finish();
+        }
+        super.onUserLeaveHint();
+    }
+
+
+    @Override
+    public void onBackPressed()
+    {
+        finish();
     }
 }

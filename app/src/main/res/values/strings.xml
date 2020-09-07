@@ -41,8 +41,9 @@
     <string name="widget_config_text_selectedevent">Выбрано событие: %1$s</string>
     <string name="widget_config_menu_default">По умолчанию</string>
     <string name="appwidget_error">Загрузка&#8230;</string>
-    <string name="configure">Какое событие отображать?</string>
-    <string name="add_widget">Добавить виджет</string>
+    <string name="widget_config_configure">Какое событие отображать?</string>
+    <string name="widget_config_add">Добавить виджет</string>
+    <string name="widget_config_update">Обновить</string>
 
     <string name="arc_text_welcome">Здесь будут отображаться прошедшие события</string>
 

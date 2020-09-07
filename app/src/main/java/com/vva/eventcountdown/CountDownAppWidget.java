@@ -93,9 +93,18 @@ public class CountDownAppWidget extends AppWidgetProvider {
             views.setTextViewText(R.id.fullCountDownTextView,"");
         }
 
+
+
+        Intent forConfig = new Intent(context, CountDownAppWidgetConfigureActivity.class);
+        forConfig.putExtra(AppWidgetManager.EXTRA_APPWIDGET_ID,appWidgetId);
+        forConfig.putExtra("UPDATE_FLAG",true);
+        PendingIntent pForConfigIntent = PendingIntent.getActivity(context,appWidgetId,forConfig,PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setOnClickPendingIntent(R.id.titleTextView,pForConfigIntent);
+
         Intent forMainActivityIntent = new Intent(context,MainActivity.class);
         PendingIntent pIntent = PendingIntent.getActivity(context,appWidgetId,forMainActivityIntent,0);
-        views.setOnClickPendingIntent(R.id.linearLayout,pIntent);
+        views.setOnClickPendingIntent(R.id.countDownTextView,pIntent);
+        views.setOnClickPendingIntent(R.id.fullCountDownTextView,pIntent);
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
