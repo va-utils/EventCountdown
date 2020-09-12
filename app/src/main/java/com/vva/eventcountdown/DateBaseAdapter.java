@@ -123,6 +123,15 @@ public class DateBaseAdapter
         return db.delete(DateBaseHelper.TABLE, whereClause, whereArgs);
     }
 
+    public long deleteOld()
+    {
+        LocalDate ld = LocalDate.now();
+        long ed = ld.toEpochDay();
+        String whereClause = DateBaseHelper.COLUMN_EPOCHDAYS + " < ?";
+        String[] whereArgs = new String[]{String.valueOf(ed)};
+        return db.delete(DateBaseHelper.TABLE,whereClause,whereArgs);
+    }
+
     public long update(MyEvent event)
     {
         String whereClause = DateBaseHelper.COLUMN_ID+"="+event.getId();

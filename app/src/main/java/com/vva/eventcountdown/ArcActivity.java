@@ -4,10 +4,13 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ListView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.util.List;
 
@@ -65,5 +68,42 @@ public class ArcActivity extends AppCompatActivity {
     {
         super.onResume();
         showOldEvents();
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu)
+    {
+        getMenuInflater().inflate(R.menu.menu_arc_activity,menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+        if(id == R.id.arc_activity_clr)
+        {
+            DateBaseAdapter adapter = new DateBaseAdapter(this);
+            adapter.open();
+            List<MyEvent> events = adapter.getEvents(DateBaseHelper.ORDER_DESC,true);
+            if(events.isEmpty())
+            {
+                Toast.makeText(this, getString(R.string.arc_text_empty), Toast.LENGTH_SHORT).show();
+            }
+            else
+            {
+                long deleted = adapter.deleteOld();
+                if(deleted > 0)
+                {
+                    Toast.makeText(this, getString(R.string.arc_text_result,deleted), Toast.LENGTH_LONG).show();
+                    welcomeTextView.setVisibility(View.VISIBLE);
+                }
+
+            }
+            eventAdapter = new EventAdapter(this, R.layout.list_item, events);
+            listView.setAdapter(eventAdapter);
+            adapter.close();
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }
