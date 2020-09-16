@@ -92,15 +92,13 @@ public class ArcActivity extends AppCompatActivity {
             else
             {
                 long deleted = adapter.deleteOld();
-                if(deleted > 0)
-                {
-                    Toast.makeText(this, getString(R.string.arc_text_result,deleted), Toast.LENGTH_LONG).show();
-                    welcomeTextView.setVisibility(View.VISIBLE);
-                }
-
+                Toast.makeText(this, getString(R.string.arc_text_result,deleted), Toast.LENGTH_LONG).show();
+                events = adapter.getEvents(DateBaseHelper.ORDER_DESC,true);
+                eventAdapter = new EventAdapter(this, R.layout.list_item, events);
+                listView.setAdapter(eventAdapter);
+                welcomeTextView.setVisibility(View.VISIBLE);
             }
-            eventAdapter = new EventAdapter(this, R.layout.list_item, events);
-            listView.setAdapter(eventAdapter);
+
             adapter.close();
             return true;
         }

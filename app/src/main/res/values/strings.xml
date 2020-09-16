@@ -11,7 +11,7 @@
 
     <string name="action_about">О программе</string>
     <string name="action_clear_arc">Очистить архив</string>
-
+    <string name="action_feedback">Обратная связь</string>
 
     <string name="newevent_text_label">Редактирование</string>
     <string name="newevent_text_title">Заголовок:</string>
@@ -48,8 +48,8 @@
     <string name="arc_text_welcome">Здесь будут отображаться прошедшие события</string>
     <string name="arc_text_empty">Нет событий для удаления</string>
     <string name="arc_text_result">Удалено старых событий: %1$d</string>
-    <string name="all_remained">Осталось %1$s%2$s%3$s</string>
-    <string name="all_passed">Прошло %1$s%2$s%3$s</string>
+    <string name="all_remained">Осталось: %1$s%2$s%3$s</string>
+    <string name="all_passed">Прошло: %1$s%2$s%3$s</string>
 
 
 </resources>

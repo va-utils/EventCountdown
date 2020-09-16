@@ -2,6 +2,7 @@ package com.vva.eventcountdown;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.net.Uri;
 import android.os.Bundle;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -213,6 +214,19 @@ public class MainActivity extends AppCompatActivity {
             startActivity(intent);
         }
 
+
+        if(id == R.id.action_feedback)
+        {
+            activity_flag = true;
+            Intent intent = new Intent(Intent.ACTION_SENDTO);
+            intent.setData(Uri.parse("mailto:"));
+            intent.putExtra(Intent.EXTRA_EMAIL,new String[]{"tulastr71@yandex.ru"});
+            intent.putExtra(Intent.EXTRA_SUBJECT,"Отзыв о EventCountdown");
+            if(intent.resolveActivity(getPackageManager())!=null)
+            {
+                startActivity(intent);
+            }
+        }
         return super.onOptionsItemSelected(item);
     }
 
