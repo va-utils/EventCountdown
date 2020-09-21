@@ -62,7 +62,7 @@ public class UpdateAndNotifyService extends Service {
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANEL_ID);
                 NotificationChannel channel = new NotificationChannel(CHANEL_ID, "Наступление события", NotificationManager.IMPORTANCE_HIGH);
                 builder.setContentText(msg.toString());
-                builder.setContentTitle(context.getString(R.string.all_text_today,fmt.format(current)));
+                builder.setContentTitle(context.getString(R.string.notify_text_today,fmt.format(current)));
                 builder.setSmallIcon(R.drawable.ic_stat_name);
                 builder.setAutoCancel(true);
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);

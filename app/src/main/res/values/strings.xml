@@ -22,8 +22,8 @@
     <string name="all_button_save">Сохранить</string>
     <string name="all_label_newevent">Новое событие</string>
     <string name="all_label_about">О программе</string>
-    <string name="all_text_today">Сегодня %1$s:</string>
-
+    <string name="notify_text_today">Сегодня %1$s:</string>
+    <string name="all_text_today">Сегодня</string>
     <string name="main_text_welcome">Пока ничего не добавлено&#8230;</string>
 
     <string name="about_text_about">Event Countdown - бесплатное приложение для того, чтобы знать, сколько осталось до важного события.
