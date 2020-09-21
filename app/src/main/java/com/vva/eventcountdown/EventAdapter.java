@@ -19,17 +19,17 @@ public class EventAdapter extends ArrayAdapter<MyEvent>
     private List<MyEvent> events;
     private LayoutInflater inflater;
     private int layout;
-    private SharedPreferences sharedPreferences;
+   // private SharedPreferences sharedPreferences;
     private int format;
 
     private static final String SETTINGS_FILENAME = "settings";
-    private final String SETTING_FORMAT = "format";
+    //private final String SETTING_FORMAT = "format";
 
     public EventAdapter(Context context, int resource, List<MyEvent> events)
     {
         super(context, resource, events);
-        sharedPreferences = context.getSharedPreferences(SETTINGS_FILENAME, context.MODE_PRIVATE);
-        format = sharedPreferences.getInt(SETTING_FORMAT,0);
+        SharedPreferences sharedPreferences = context.getSharedPreferences(SETTINGS_FILENAME, context.MODE_PRIVATE);
+        format = sharedPreferences.getInt("format",0);
         this.events = events;
         this.layout = resource;
         this.inflater = LayoutInflater.from(context);

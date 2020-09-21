@@ -2,6 +2,7 @@ package com.vva.eventcountdown;
 
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.app.Service;
 import android.appwidget.AppWidgetManager;
 import android.content.BroadcastReceiver;
@@ -15,6 +16,7 @@ import android.widget.Toast;
 import androidx.core.app.NotificationCompat;
 
 import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 
 public class UpdateAndNotifyService extends Service {
@@ -56,13 +58,18 @@ public class UpdateAndNotifyService extends Service {
             }
 
             if (evs > 0) {
+                DateTimeFormatter fmt = DateTimeFormatter.ofPattern("dd MMMM yyyy");
                 NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANEL_ID);
                 NotificationChannel channel = new NotificationChannel(CHANEL_ID, "Наступление события", NotificationManager.IMPORTANCE_HIGH);
                 builder.setContentText(msg.toString());
-                builder.setContentTitle(context.getString(R.string.all_text_today));
+                builder.setContentTitle(context.getString(R.string.all_text_today,fmt.format(current)));
                 builder.setSmallIcon(R.drawable.ic_stat_name);
+                builder.setAutoCancel(true);
                 NotificationManager notificationManager = (NotificationManager) context.getSystemService(NOTIFICATION_SERVICE);
                 notificationManager.createNotificationChannel(channel);
+                Intent intent = new Intent(context,MainActivity.class);
+                PendingIntent pIntent = PendingIntent.getActivity(context,0,intent, PendingIntent.FLAG_UPDATE_CURRENT);
+                builder.setContentIntent(pIntent);
                 notificationManager.notify(NOTIFY_ID, builder.build());
             }
         }

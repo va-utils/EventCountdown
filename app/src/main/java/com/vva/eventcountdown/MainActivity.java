@@ -43,6 +43,7 @@ public class MainActivity extends AppCompatActivity {
         welcomeTextView = findViewById(R.id.welcomeTextView);
         listView.setOnItemLongClickListener(longClickListener);
         sharedPreferences = getSharedPreferences(SETTINGS_FILENAME, MODE_PRIVATE);
+        startService(new Intent(MainActivity.this,UpdateAndNotifyService.class));
     }
 
     ListView.OnItemLongClickListener longClickListener = new ListView.OnItemLongClickListener()
